@@ -1,4 +1,4 @@
-package devoluapp.github.io.notificadorlocal.data
+package devoluapp.github.io.notificador.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore

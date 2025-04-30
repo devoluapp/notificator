@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "NotificadorLocal"
 include(":app")
+include(":notificador-periodico")

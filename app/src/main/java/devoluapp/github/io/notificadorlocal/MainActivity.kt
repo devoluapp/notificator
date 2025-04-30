@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import devoluapp.github.io.notificador.NotificadorUtils
+import devoluapp.github.io.notificadorlocal.data.NotificationRepositoryImpl
 import devoluapp.github.io.notificadorlocal.ui.screens.ConfigScreen
 import devoluapp.github.io.notificadorlocal.ui.theme.NotificadorLocalTheme
 
@@ -30,6 +32,9 @@ class MainActivity : ComponentActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
+
+        NotificadorUtils.setRepository(NotificationRepositoryImpl())
+
 
         setContent {
             NotificadorLocalTheme {
