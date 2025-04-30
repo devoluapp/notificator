@@ -3,8 +3,6 @@ import org.jetbrains.kotlin.tooling.core.withLinearClosure
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
 }
 
 android {
@@ -49,9 +47,4 @@ dependencies {
     // DataStore Preferences
     implementation(libs.androidx.datastore.preferences)
 
-    // Hilt compiler
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.work)
-    ksp(libs.hilt.android.compiler)
-    ksp(libs.hilt.compiler)
 }

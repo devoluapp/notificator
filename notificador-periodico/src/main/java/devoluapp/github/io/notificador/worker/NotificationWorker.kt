@@ -10,7 +10,6 @@ import androidx.work.WorkerParameters
 import devoluapp.github.io.feat_notificador.R
 import devoluapp.github.io.notificador.data.NotificationServiceLocator
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 class NotificationWorker (
     private val context: Context,
@@ -55,12 +54,11 @@ class NotificationWorker (
         }
         notificationManager.createNotificationChannel(channel)
 
-        val currentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
         val textoNotificacao = NotificationServiceLocator.repository?.geraTextoAfirmacao()
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setContentTitle("Lembrete")
-            .setContentText("$textoNotificacao \n$currentTime")
-            .setStyle(NotificationCompat.BigTextStyle().bigText("$textoNotificacao \n$currentTime"))
+            .setContentTitle("")
+            .setContentText("$textoNotificacao")
+            .setStyle(NotificationCompat.BigTextStyle().bigText("$textoNotificacao"))
             .setSmallIcon(iconResId)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
