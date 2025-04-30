@@ -1,9 +1,9 @@
 package devoluapp.github.io.notificadorlocal.data
 
-import devoluapp.github.io.notificador.NotificationRepository
+import devoluapp.github.io.notificator.NotificationRepository
 
 class NotificationRepositoryImpl : NotificationRepository{
-    override suspend fun geraTextoAfirmacao(): String {
+    override suspend fun getNotificationText(): String {
         return obterAfirmacaoPositiva()
     }
 }

@@ -24,8 +24,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import devoluapp.github.io.notificador.NotificadorUtils
+import devoluapp.github.io.notificator.Notificator
 import devoluapp.github.io.notificadorlocal.R
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -34,7 +35,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun ConfigScreen() {
     val context = LocalContext.current
-    val notificador = remember { NotificadorUtils(
+    val notificador = remember { Notificator(
         context
     ) }
     
@@ -73,11 +74,13 @@ fun ConfigScreen() {
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+//        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.SpaceAround
     ) {
         Text(
             text = "Configuração de Notificações",
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.headlineLarge,
+            textAlign = TextAlign.Center
         )
 
         OutlinedCard(
@@ -87,30 +90,32 @@ fun ConfigScreen() {
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
                     text = "Horário de Início",
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleLarge
                 )
                 
                 OutlinedButton(
                     onClick = { showStartTimePicker = true },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.padding(16.dp)
                 ) {
-                    Text(text = startTime)
+                    Text(text = startTime, style = MaterialTheme.typography.displayLarge,)
                 }
 
                 Text(
                     text = "Horário de Fim",
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center
                 )
                 
                 OutlinedButton(
                     onClick = { showEndTimePicker = true },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.padding(16.dp)
                 ) {
-                    Text(text = endTime)
+                    Text(text = endTime, style = MaterialTheme.typography.displayLarge,)
                 }
             }
         }
@@ -118,10 +123,11 @@ fun ConfigScreen() {
         Button(
             onClick = {
                 notificador.scheduleNotifications(startTime, endTime, R.drawable.ic_notification_customized)
-            },
-            modifier = Modifier.fillMaxWidth()
+            }
         ) {
-            Text("Salvar Configurações")
+            Text(text = "Salvar Configurações",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(16.dp))
         }
     }
 
