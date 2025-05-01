@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.maven.publish)
 }
 
 android {
@@ -46,3 +47,17 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
 
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+                groupId = "io.github.devoluapp"
+                artifactId = "notificator"
+                version = "1.0.0"
+            }
+        }
+    }
+}
+
