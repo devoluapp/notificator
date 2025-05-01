@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "notification_settings")
 
-class NotificationPreferences(private val context: Context) {
+internal class NotificationPreferences(private val context: Context) {
     
     companion object {
         private val START_TIME = stringPreferencesKey("start_time")

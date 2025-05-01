@@ -12,14 +12,13 @@ import devoluapp.github.io.notificator.data.NotificationServiceLocator
 import java.lang.System.currentTimeMillis
 import java.time.LocalTime
 
-class NotificationWorker (
+internal class NotificationWorker (
     private val context: Context,
     params: WorkerParameters
 ) : CoroutineWorker(context, params) {
 
     companion object {
         const val CHANNEL_ID = "notification_channel"
-        const val NOTIFICATION_ID = 1
         const val NOTIFICATION_GROUP_KEY = "notification_group"
         const val SUMMARY_NOTIFICATION_ID = 0
         const val START_TIME_KEY = "start_time"

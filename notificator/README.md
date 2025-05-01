@@ -10,7 +10,9 @@ Permite:
 
 ### Importanto a biblioteca no projeto
 
-<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+```xml
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+```
 
 1. No settings.gradle.kts (nível do projeto), na seção `dependencyResolutionManagement` adicionar o repositório do jitpack:
 
@@ -49,13 +51,13 @@ dependencies {
 </manifest>
 ```
 
-
 2. Criar uma classe que implemente a interface `NotificationRepository` da biblioteca
 
-3. Criar, no projeto, uma classe que implemente a interface `NotificationRepository`. A função do único método dessa interface é fornecer o texto da notificação que será exibida. Exemplo didático abaixo:
-```kotlin  
-import devoluapp.github.io.notificador.NotificationRepository  
-
+3. Criar, no projeto, uma classe que implemente a interface `NotificationRepository`. A função do 
+único método dessa interface é fornecer o texto da notificação que será exibida. 
+Lembre-se de impoportar NotificationRepository do pacote  `devoluapp.github.io.notificador`
+Exemplo didático abaixo:
+```kotlin
 class NotificationRepositoryImpl : NotificationRepository{    
 	override suspend fun getNotificationText(): String {    
         return "Esse será o texto da notificação"    

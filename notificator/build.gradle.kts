@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.maven.publish)
 }
 
+val libversion: String by project
+val groupid: String by project
+
 android {
     namespace = "devoluapp.github.io.feat_notificador"
     compileSdk = 35
@@ -53,11 +56,15 @@ afterEvaluate {
         publications {
             create<MavenPublication>("release") {
                 from(components["release"])
-                groupId = "io.github.devoluapp"
+                groupId = groupid
                 artifactId = "notificator"
-                version = "1.0.0"
+                version = libversion
             }
+        }
+
+        // Repositório local para testes
+        repositories {
+            mavenLocal()
         }
     }
 }
-

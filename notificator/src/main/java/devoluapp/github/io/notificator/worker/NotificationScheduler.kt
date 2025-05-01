@@ -10,7 +10,7 @@ import androidx.work.workDataOf
 import devoluapp.github.io.feat_notificador.R
 import java.util.concurrent.TimeUnit
 
-class NotificationScheduler(private val context: Context) {
+internal class NotificationScheduler(private val context: Context) {
     
     companion object {
         private const val WORK_NAME = "notification_work"
