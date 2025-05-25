@@ -3,14 +3,18 @@ package devoluapp.github.io.notificator.worker
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import devoluapp.github.io.feat_notificador.R
 import devoluapp.github.io.notificator.data.NotificationServiceLocator
+import devoluapp.github.io.notificator.receiver.NotificationTextReceiver
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.lang.System.currentTimeMillis
 import java.time.LocalTime
+import kotlin.coroutines.resume
 
 internal class NotificationWorker (
     private val context: Context,
@@ -56,11 +60,18 @@ internal class NotificationWorker (
         }
         notificationManager.createNotificationChannel(channel)
 
-        val textoNotificacao = NotificationServiceLocator.repository?.getNotificationText()
+        // Tenta obter o texto do repositório
+        var textoNotificacao = NotificationServiceLocator.repository?.getNotificationText()
+
+        // Se o repositório não estiver disponível, solicita o texto via broadcast
+        if (textoNotificacao == null) {
+            textoNotificacao = requestNotificationText()
+        }
+
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle("")
-            .setContentText("$textoNotificacao")
-            .setStyle(NotificationCompat.BigTextStyle().bigText("$textoNotificacao"))
+            .setContentText(textoNotificacao)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(textoNotificacao))
             .setSmallIcon(iconResId)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
@@ -84,7 +95,41 @@ internal class NotificationWorker (
             .build()
 
         notificationManager.notify(SUMMARY_NOTIFICATION_ID, summaryNotification)
+    }
 
+    private suspend fun requestNotificationText(): String = suspendCancellableCoroutine { continuation ->
+        val receiver = object : android.content.BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                val text = intent.getStringExtra(NotificationTextReceiver.EXTRA_NOTIFICATION_TEXT)
+                if (text != null) {
+                    continuation.resume(text)
+                } else {
+                    continuation.resume("Lembre-se de respirar e manter a calma")
+                }
+                context.unregisterReceiver(this)
+            }
+        }
 
+        // Registra o receiver temporariamente
+        context.registerReceiver(
+            receiver,
+            android.content.IntentFilter(NotificationTextReceiver.ACTION_GET_NOTIFICATION_TEXT)
+        )
+
+        // Envia o broadcast para solicitar o texto
+        val intent = Intent(NotificationTextReceiver.ACTION_GET_NOTIFICATION_TEXT)
+        context.sendBroadcast(intent)
+
+        // Timeout de 5 segundos
+        android.os.Handler(context.mainLooper).postDelayed({
+            try {
+                context.unregisterReceiver(receiver)
+                if (continuation.isActive) {
+                    continuation.resume("Lembre-se de respirar e manter a calma")
+                }
+            } catch (e: Exception) {
+                // Ignora exceções ao desregistrar o receiver
+            }
+        }, 5000)
     }
 } 

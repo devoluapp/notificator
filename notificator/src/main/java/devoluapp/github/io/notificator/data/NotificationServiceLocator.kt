@@ -5,3 +5,4 @@ import devoluapp.github.io.notificator.NotificationRepository
 object NotificationServiceLocator {
     var repository: NotificationRepository? = null
 }
+ 

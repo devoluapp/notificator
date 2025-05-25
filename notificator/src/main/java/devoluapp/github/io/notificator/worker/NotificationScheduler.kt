@@ -16,7 +16,7 @@ internal class NotificationScheduler(private val context: Context) {
         private const val WORK_NAME = "notification_work"
     }
 
-    fun scheduleNotifications(startTime: String, endTime: String, iconResId: Int?) {
+    fun scheduleNotifications(startTime: String, endTime: String, interval: Int, iconResId: Int?) {
         // Cancela todos os trabalhos anteriores
         cancelNotifications()
 
@@ -31,12 +31,11 @@ internal class NotificationScheduler(private val context: Context) {
 
         // Cria a solicitação de trabalho periódico
         val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(
-            15, TimeUnit.MINUTES,
-            15, TimeUnit.MINUTES // Flexibilidade de 15 minutos
+            interval.toLong(), TimeUnit.MINUTES,
+            interval.toLong(), TimeUnit.MINUTES // Flexibilidade igual ao intervalo
         )
             .setInputData(inputData)
             .build()
-
 
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             WORK_NAME,

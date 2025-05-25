@@ -14,6 +14,7 @@ class Notificator(context: Context) {
 
     val startTime = notificationPreferences.startTime
     val endTime = notificationPreferences.endTime
+    val interval = notificationPreferences.interval
 
     suspend fun saveStartTime(
         startTime: String
@@ -27,11 +28,17 @@ class Notificator(context: Context) {
         notificationPreferences.saveEndTime(endTime)
     }
 
-    fun scheduleNotifications(startTime: String, endTime: String, iconResId: Int?){
+    suspend fun saveInterval(
+        minutes: Int
+    ) {
+        notificationPreferences.saveInterval(minutes)
+    }
+
+    fun scheduleNotifications(startTime: String, endTime: String, interval: Int, iconResId: Int?){
         if(NotificationServiceLocator.repository == null){
             throw(IllegalStateException("Repository not set, " + "use NotificadorUtils.setRepository(repository: NotificationRepository) first."))
         }
-        notificationScheduler.scheduleNotifications(startTime, endTime, iconResId)
+        notificationScheduler.scheduleNotifications(startTime, endTime, interval, iconResId)
     }
 
     companion object {
